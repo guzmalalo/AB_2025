@@ -10,7 +10,7 @@ typedef struct  n{
     struct n* droite;
 } Noeud;
 
-void ajouterNoued(Noeud ** pArbre, int val)
+void ajouterNoeud(Noeud ** pArbre, int val)
 {
     if (*pArbre == NULL)
     {
@@ -21,11 +21,11 @@ void ajouterNoued(Noeud ** pArbre, int val)
     }
     else if ( val < (*pArbre)->val )
     {
-      ajouterNoued(&((*pArbre)->gauche), val);
+      ajouterNoeud(&((*pArbre)->gauche), val);
     }
     else if (val > (*pArbre)->val)
     {
-        ajouterNoued(&((*pArbre)->droite), val);
+        ajouterNoeud(&((*pArbre)->droite), val);
     }else
     {
         printf("La valeur est déja dans l'arbre");
@@ -47,14 +47,53 @@ void libererArbre(Noeud ** pArbre)
     free(*pArbre);
 }
 
+void affichageInfixe(Noeud * arbre )
+{
+    // on vérifie que l'arbre n'est pas nul
+    if (arbre == NULL) return;
+
+    affichageInfixe(arbre->gauche);
+    printf("%d ", arbre->val);
+    affichageInfixe(arbre->droite);
+}
+
+void affichagePrefixe(Noeud * arbre )
+{
+    // on vérifie que l'arbre n'est pas nul
+    if (arbre == NULL) return;
+
+    printf("%d ", arbre->val);
+    affichagePrefixe(arbre->gauche);
+    affichagePrefixe(arbre->droite);
+}
+
+void affichagePostfixe(Noeud * arbre )
+{
+    // on vérifie que l'arbre n'est pas nul
+    if (arbre == NULL) return;
+
+    affichagePostfixe(arbre->gauche);
+    affichagePostfixe(arbre->droite);
+    printf("%d ", arbre->val);
+}
+
 int main(void)
 {
     Noeud* racine = NULL;
-    ajouterNoued(&racine, 10);
-    ajouterNoued(&racine, 8);
-    ajouterNoued(&racine, 5);
-    ajouterNoued(&racine, 3);
-    ajouterNoued(&racine, 15);
+    ajouterNoeud(&racine, 10);
+    ajouterNoeud(&racine, 8);
+    ajouterNoeud(&racine, 5);
+    ajouterNoeud(&racine, 3);
+    ajouterNoeud(&racine, 15);
+
+    printf("\nAffichage infixe\n");
+    affichageInfixe(racine);
+
+    printf("\nAffichage prefixe\n");
+    affichagePrefixe(racine);
+
+    printf("\nAffichage postfixe\n");
+    affichagePostfixe(racine);
 
     libererArbre(&racine);
     return 0;
